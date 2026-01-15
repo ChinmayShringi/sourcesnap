@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SourceSnap Settings</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      width: 320px;
+      background: #1e1e1e;
+      color: #ffffff;
+      padding: 16px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #333;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #61dafb;
+    }
+
+    .logo {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(135deg, #3b82f6, #61dafb);
+      border-radius: 6px;
+    }
+
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 13px;
+      background: #2d2d2d;
+      border: 1px solid #404040;
+      border-radius: 6px;
+      color: #ffffff;
+      outline: none;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: #3b82f6;
+    }
+
+    select option {
+      background: #2d2d2d;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #404040;
+      transition: 0.2s;
+      border-radius: 22px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.2s;
+      border-radius: 50%;
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background-color: #3b82f6;
+    }
+
+    .toggle input:checked + .toggle-slider:before {
+      transform: translateX(18px);
+    }
+
+    .hotkey-display {
+      font-size: 12px;
+      color: #98c379;
+      background: #2d2d2d;
+      padding: 6px 10px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    .footer {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid #333;
+      font-size: 11px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo"></div>
+    <h1>SourceSnap</h1>
+  </div>
+
+  <div class="section">
+    <div class="toggle-row">
+      <span class="toggle-label">Enabled</span>
+      <label class="toggle">
+        <input type="checkbox" id="enabled" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Editor</div>
+    <div class="field">
+      <select id="editor">
+        <option value="cursor">Cursor</option>
+        <option value="vscode">VS Code</option>
+        <option value="vscode-insiders">VS Code Insiders</option>
+        <option value="windsurf">Windsurf</option>
+        <option value="zed">Zed</option>
+        <option value="webstorm">WebStorm</option>
+        <option value="phpstorm">PhpStorm</option>
+        <option value="idea">IntelliJ IDEA</option>
+        <option value="pycharm">PyCharm</option>
+        <option value="goland">GoLand</option>
+        <option value="rubymine">RubyMine</option>
+        <option value="rider">Rider</option>
+        <option value="clion">CLion</option>
+        <option value="android-studio">Android Studio</option>
+        <option value="fleet">Fleet</option>
+        <option value="sublime">Sublime Text</option>
+        <option value="atom">Atom</option>
+        <option value="nova">Nova</option>
+        <option value="textmate">TextMate</option>
+        <option value="brackets">Brackets</option>
+        <option value="vim">MacVim</option>
+        <option value="emacs">Emacs</option>
+        <option value="antigravity">Antigravity (Google)</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+    <div class="field" id="customUrlField" style="display: none;">
+      <label>Custom URL Template</label>
+      <input type="text" id="customEditorUrl" placeholder="myeditor://open?file={filePath}&line={line}">
+      <div class="hint">Use {filePath}, {line}, {column} as placeholders</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Hotkey</div>
+    <div class="hotkey-display" id="hotkeyDisplay">Alt + Click</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Project Path</div>
+    <div class="field">
+      <label>Path Prefix (optional)</label>
+      <input type="text" id="projectPathPrefix" placeholder="/Users/you/projects/myapp">
+      <div class="hint">Prepended to relative file paths</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="toggle-row">
+      <span class="toggle-label">Show Tooltip on Hover</span>
+      <label class="toggle">
+        <input type="checkbox" id="showTooltip" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <span class="toggle-label">Disable Auto-Open IDE</span>
+      <label class="toggle">
+        <input type="checkbox" id="disableAutoOpen">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="hint" style="margin-top: 4px;">When checked, clicking shows panel only (use "Open in IDE" button)</div>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/sourcesnap/sourcesnap" target="_blank">GitHub</a>
+    &middot; Version 1.0.0
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>
