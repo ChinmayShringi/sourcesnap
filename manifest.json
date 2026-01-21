@@ -1,6 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SourceSnap",
+  "homepage_url": "https://github.com/ChinmayShringi/sourcesnap",
   "version": "1.0.0",
   "description": "Alt+Click any element to open its source code in your editor. Supports React, Vue, Svelte, SolidJS, Preact.",
   "icons": {

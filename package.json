@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Alt+Click any element to open its source in your editor",
   "type": "module",
+  "homepage": "https://github.com/ChinmayShringi/sourcesnap",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChinmayShringi/sourcesnap.git"
+  },
   "scripts": {
     "build": "node build.mjs",
     "clean": "rm -rf dist"
