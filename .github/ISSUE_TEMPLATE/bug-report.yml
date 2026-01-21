@@ -1,0 +1,33 @@
+name: Bug Report
+description: Create a bug report to help us improve
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: input
+    attributes:
+      label: Browser
+      placeholder: e.g. Chrome 120, Firefox 121
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Framework
+      placeholder: e.g. React 18, Vue 3, Svelte 4
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of the bug, as well as what you expected to happen when encountering it.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Alt+Click on '...'
+        3. See error
+    validations:
+      required: false
