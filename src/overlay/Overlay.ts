@@ -73,12 +73,6 @@ export class Overlay {
     this.currentInfo = info;
     const rect = info.boundingBox;
 
-    // Debug logging
-    console.log('[SourceSnap] show() called with info:', info);
-    console.log('[SourceSnap] Element reference:', info.element);
-    console.log('[SourceSnap] Element tagName:', info.element?.tagName);
-    console.log('[SourceSnap] Current className:', info.className);
-
     // Store original values for reset
     this.originalClassName = info.className || '';
     this.originalStyle = info.element?.getAttribute('style') || '';
@@ -349,7 +343,6 @@ export class Overlay {
     const enabledRules = this.styleRules.filter(r => r.enabled && r.property && r.value);
     const styleStr = enabledRules.map(r => `${r.property}: ${r.value}`).join('; ');
 
-    console.log('[SourceSnap] Applying style rules:', styleStr);
     this.currentInfo.element.setAttribute('style', styleStr);
   }
 
@@ -522,7 +515,7 @@ export class Overlay {
               btn.innerHTML = originalText;
             }, 1500);
           } catch (err) {
-            console.error('[SourceSnap] Failed to copy:', err);
+            // Failed to copy
           }
         }
       });
@@ -533,16 +526,9 @@ export class Overlay {
     const resetBtn = this.panel.querySelector('#reset-changes');
     const addStyleBtn = this.panel.querySelector('#add-style-rule');
 
-    // Debug logging
-    console.log('[SourceSnap] attachEventListeners - classInput:', classInput);
-    console.log('[SourceSnap] attachEventListeners - currentInfo:', this.currentInfo);
-    console.log('[SourceSnap] attachEventListeners - element:', this.currentInfo?.element);
-
     // className input listener
     if (classInput) {
-      console.log('[SourceSnap] Attaching classInput listener');
       classInput.addEventListener('input', () => {
-        console.log('[SourceSnap] classInput changed to:', classInput.value);
         if (this.currentInfo?.element) {
           this.currentInfo.element.className = classInput.value;
           classInput.classList.toggle('modified', classInput.value !== classInput.dataset.original);
@@ -554,14 +540,13 @@ export class Overlay {
     const htmlInput = this.panel.querySelector('#edit-html') as HTMLTextAreaElement;
     if (htmlInput) {
       htmlInput.addEventListener('input', () => {
-        console.log('[SourceSnap] htmlInput changed');
         if (this.currentInfo?.element) {
           try {
             // Use outerHTML to replace the entire element
             this.currentInfo.element.outerHTML = htmlInput.value;
             htmlInput.classList.toggle('modified', htmlInput.value !== htmlInput.dataset.original);
           } catch (e) {
-            console.error('[SourceSnap] Invalid HTML:', e);
+            // Invalid HTML
           }
         }
       });
@@ -667,7 +652,6 @@ export class Overlay {
       if (classInput) classInput.dataset.original = newClassName;
       if (htmlInput) htmlInput.dataset.original = newHTML;
     } catch (err) {
-      console.error('[SourceSnap] Copy error:', err);
       this.showStatus('error', 'Failed to copy to clipboard');
     }
   }
@@ -725,7 +709,7 @@ export class Overlay {
       try {
         this.currentInfo.element.outerHTML = this.originalOuterHTML;
       } catch (e) {
-        console.error('[SourceSnap] Reset HTML error:', e);
+        // Reset HTML error
       }
       htmlInput.classList.remove('modified');
     }
@@ -748,7 +732,7 @@ export class Overlay {
       const url = buildEditorUrl(this.editor, source, this.projectPathPrefix);
       window.location.href = url;
     } catch (error) {
-      console.error('[SourceSnap] Failed to open editor:', error);
+      // Failed to open editor
     }
   }
 

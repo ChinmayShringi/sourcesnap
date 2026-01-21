@@ -13,14 +13,10 @@ const entries = [
 ];
 
 async function buildAll() {
-  console.log('Building SourceSnap extension...\n');
-
   // Clean and create dist
   const distDir = resolve(__dirname, 'dist');
 
   for (const { name, entry, outFile } of entries) {
-    console.log(`Building ${name}...`);
-
     const outDir = resolve(distDir, dirname(outFile));
 
     await build({
@@ -54,7 +50,6 @@ async function buildAll() {
   }
 
   // Copy static files
-  console.log('\nCopying static files...');
 
   // manifest.json
   copyFileSync(
@@ -78,8 +73,6 @@ async function buildAll() {
       { recursive: true }
     );
   }
-
-  console.log('\nBuild complete! Load dist/ folder in chrome://extensions');
 }
 
 buildAll().catch(console.error);

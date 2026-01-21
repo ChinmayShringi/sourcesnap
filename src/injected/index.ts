@@ -47,14 +47,7 @@ class SourceSnap {
     this.setupEventListeners();
     this.setupMessageListener();
 
-    // Log which adapters are applicable
-    const applicableAdapters = this.adapters.filter(a => a.isApplicable());
-    console.log('[SourceSnap] Initialized. Applicable adapters:', applicableAdapters.map(a => a.id));
-    console.log('[SourceSnap] All adapters:', this.adapters.map(a => `${a.id}(applicable:${a.isApplicable()})`));
-
     // Check for React DevTools
-    console.log('[SourceSnap] React DevTools hook:', !!(window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__);
-    console.log('[SourceSnap] Vue:', !!(window as any).__VUE__ || !!(window as any).__VUE_DEVTOOLS_GLOBAL_HOOK__);
   }
 
   private setupEventListeners(): void {
@@ -85,7 +78,6 @@ class SourceSnap {
         this.settings = { ...this.settings, ...event.data.payload };
         // Update overlay with editor settings
         this.overlay.setEditor(this.settings.editor, this.settings.projectPathPrefix);
-        console.log('[SourceSnap] Settings updated:', this.settings);
       }
     });
 
@@ -150,8 +142,6 @@ class SourceSnap {
   }
 
   private handleClick(event: MouseEvent): void {
-    console.log('[SourceSnap] Click detected, altKey:', event.altKey, 'enabled:', this.settings.enabled);
-
     // If panel is locked, check if click is outside the panel to unlock
     if (this.panelLocked) {
       // Check if click is outside the panel (handled by overlay)
@@ -162,11 +152,9 @@ class SourceSnap {
     }
 
     if (!this.settings.enabled) {
-      console.log('[SourceSnap] Extension disabled');
       return;
     }
     if (!this.isHotkeyPressed(event)) {
-      console.log('[SourceSnap] Hotkey not pressed (need Alt+Click)');
       return;
     }
 
@@ -174,7 +162,6 @@ class SourceSnap {
     event.stopPropagation();
 
     const element = event.target as HTMLElement;
-    console.log('[SourceSnap] Processing element:', element.tagName, element);
 
     const info = this.getElementInfo(element);
 
@@ -183,18 +170,13 @@ class SourceSnap {
       this.panelLocked = true;
       this.lockedElement = element;
       this.overlay.show(info);
-      console.log('[SourceSnap] Panel locked for element:', element.tagName);
 
       // Auto-open in IDE unless disabled
       if (!this.settings.disableAutoOpen && info.source) {
         this.openInEditor(info.source);
       }
     } else {
-      console.log('[SourceSnap] No source info found for element:', element);
-      console.log('[SourceSnap] This usually means:');
-      console.log('  1. App is not in development mode (no _debugSource)');
-      console.log('  2. No data attributes from build plugins');
-      console.log('  3. React DevTools extension not installed');
+      // No source info found
     }
   }
 
@@ -202,7 +184,6 @@ class SourceSnap {
     this.panelLocked = false;
     this.lockedElement = null;
     this.overlay.hide();
-    console.log('[SourceSnap] Panel unlocked');
   }
 
   private showHighlightForElement(element: HTMLElement): void {
@@ -220,7 +201,6 @@ class SourceSnap {
       if (adapter.isApplicable()) {
         const info = adapter.getSourceInfo(element);
         if (info) {
-          console.log(`[SourceSnap] Found source via ${adapter.name}:`, info);
           return info;
         }
       }
@@ -258,11 +238,10 @@ class SourceSnap {
         this.settings.projectPathPrefix,
         this.settings.customEditorUrl
       );
-      console.log('[SourceSnap] Opening:', url);
       // Use location.href for URL schemes (more reliable than window.open)
       window.location.href = url;
     } catch (error) {
-      console.error('[SourceSnap] Failed to open editor:', error);
+      // Failed to open editor
     }
   }
 }

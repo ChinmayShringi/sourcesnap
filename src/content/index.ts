@@ -68,7 +68,6 @@ chrome.storage.onChanged.addListener((changes, area) => {
 async function init(): Promise<void> {
   await loadSettings();
   injectScript();
-  console.log('[SourceSnap] Content script initialized');
 }
 
 init();
